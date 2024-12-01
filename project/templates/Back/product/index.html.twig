@@ -1,0 +1,65 @@
+{% extends 'Back/base.html.twig' %}
+
+{% block title %}Product index{% endblock %}
+
+{% block body %}
+    <h1>Product index</h1>
+
+        <div class="text-end mb-3">
+        <a href="{{ path('app_product_new') }}" class="btn btn-primary">Create New</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>  
+                <th>Image</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Is Best Seller</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td>
+                    {% if product.image %}
+                        <img src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}" style="width: 50px; height: 50px; object-fit: cover;">
+                    {% else %}
+                        No image
+                    {% endif %}
+                </td>
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.stock }}</td>
+                <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    {% if product.isBestSeller %}
+                        <i class="fas fa-star" style="color: gold;" title="Best Seller"></i>
+                    {% else %}
+                        <i class="fas fa-times" style="color: red;" title="Not a Best Seller"></i>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('app_product_show', {'id': product.id}) }}">show</a>
+                    <a href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}

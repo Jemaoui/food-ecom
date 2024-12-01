@@ -1,0 +1,32 @@
+{% extends 'Front/base.html.twig' %}
+
+{% block title %}WellFood - Restaurant{% endblock %}
+
+
+
+
+
+
+{% block body %}
+  
+     <h2>Categories</h2>
+         
+        <div class="row">
+            {% for category in categories %}
+                <div class="col-xl-4 col-sm-6" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="50">
+                    <div class="product-item-two">
+                        <div class="image">
+                            <img src="{{ asset('uploads/' ~ category.image)}}" alt="{{ category.name }}">
+                        </div>
+                        <div class="content">
+                            <h5><a href="{{ path('category_show', {'id': category.id}) }}">{{ category.name }}</a></h5>
+                        </div>
+                        <a href="{{ path('category_show', {'id': category.id}) }}" class="theme-btn">Explorer <i class="far fa-arrow-alt-right"></i></a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+ 
+
+ 
+{% endblock %}

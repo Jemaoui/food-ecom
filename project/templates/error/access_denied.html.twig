@@ -1,0 +1,9 @@
+{% extends 'Front/base.html.twig' %}
+
+{% block title %}Access Denied{% endblock %}
+
+{% block body %}
+    <h1>Access Denied</h1>
+    <p>{{ message }}</p>
+    <a href="{{ path('app_home') }}">Go back to the homepage</a>
+{% endblock %}

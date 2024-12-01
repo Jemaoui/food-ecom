@@ -1,0 +1,67 @@
+{% extends 'Front/base.html.twig' %}
+
+{% block title %}Invoice - Order #{{ order.id }}{% endblock %}
+
+{% block body %}
+    <div class="invoice">
+        <h1>Invoice - Order #{{ order.id }}</h1>
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Order ID</th>
+                    <td>{{ order.id }}</td>
+                </tr>
+                <tr>
+                    <th>Order Date</th>
+                    <td>{{ order.createdAt ? order.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>{{ order.status }}</td>
+                </tr>
+                <tr>
+                    <th>Total Amount</th>
+                    <td>{{ order.totalAmount|number_format(2, '.', ',') }} USD</td>
+                </tr>
+                <tr>
+                    <th>Payment Method</th>
+                    <td>{{ order.paymentMethod }}</td>
+                </tr>
+                <tr>
+                    <th>Shipping Address</th>
+                    <td>{{ order.shippingAddress }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Order Items</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.orderItems %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.price|number_format(2, '.', ',') }} USD</td>
+                        <td>{{ (item.quantity * item.price)|number_format(2, '.', ',') }} USD</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Grand Total: {{ order.totalAmount|number_format(2, '.', ',') }} USD</h3>
+
+        <div class="actions">
+            <a href="#" onclick="window.print();" class="btn btn-primary">Print Invoice</a>
+            <a href="{{ path('order_pdf', {'id': order.id}) }}" class="btn btn-secondary">Download PDF</a>
+        </div>
+    </div>
+{% endblock %}

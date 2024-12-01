@@ -1,0 +1,9 @@
+{% extends 'Front/base.html.twig' %}
+
+{% block title %}Error{% endblock %}
+
+{% block body %}
+    <h1>An error occurred</h1>
+    <p>{{ message }}</p>
+    <a href="{{ path('app_home') }}">Go back to the homepage</a>
+{% endblock %}

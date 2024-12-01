@@ -1,0 +1,123 @@
+{% extends 'Front/base.html.twig' %}
+
+{% block title %}Your Cart{% endblock %}
+{% block header %}
+
+   <section class="page-banner-area overlay pt-215 rpt-150 pb-160 rpb-120 rel z-1 bgs-cover text-center" style="background-image:  url('{{ asset('theme/images/background/food-banner.jpg') }}');">
+            <div class="container">
+                <div class="banner-inner text-white">
+                    <h1 class="page-title" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="50">Your Cart</h1>
+                   
+                 
+                </div>
+            </div>
+        </section>
+        
+        {% endblock %}
+
+
+{% block body %}
+
+<section>
+    <h4>Your Cart</h4>
+
+    {% if products is empty %}
+        <p>Your cart is empty.</p>
+    {% else %}
+        <div class="container">
+            <div class="shoping-table wow fadeInUp delay-0-2s">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Images</th>
+                            <th>Product</th>
+                            <th>Unit Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in products %}
+                            <tr>
+                                <td><img src="{{ asset('uploads/' ~ item.image) }} " alt="Product"></td>
+                                <td><span class="title">{{ item.name }}</span></td>
+                                <td><span class="price">{{ item.price }}</span></td>
+                                <td>
+                                    <div class="quantity-input">
+                                        <button class="quantity-down" onclick="updateQuantity({{ item.id }}, -1)">--</button>
+                                        <input class="quantity" type="text" value="{{ item.quantity }}" name="quantity" id="quantity-{{ item.id }}">
+                                        <button class="quantity-up" onclick="updateQuantity({{ item.id }}, 1)">+</button>
+                                    </div>
+                                </td>
+                                <td><b class="price">{{ item.total }}</b></td>
+                                <td>
+                                    <button type="button" class="close" onclick="removeFromCart({{ item.id }})">×</button>
+                                </td>
+                            </tr>
+                         
+                        {% endfor %}    
+                        <tr>
+                                    <td colspan="4"><strong>Order Total</strong></td>
+                                    <td colspan="2"><b class="price">{{ total  }}</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+ 
+
+                <div  >
+                    <div class="update-shopping mb-30 text-lg-end wow fadeInRight delay-0-2s">
+                        <a href="{{ path('app_home') }}" class="theme-btn style-two my-5"> <i class="fas fa-angle-double-left  "></i> Continue shopping </a>
+                        <a href="{{ path('cart_checkout') }}" class="theme-btn my-5 "> Checkout <i class="fas fa-angle-double-right "></i></a>
+                    </div>
+                </div>
+          
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</section>
+ 
+ 
+
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+    function updateQuantity(productId, change) {
+        let quantityInput = document.getElementById('quantity-' + productId);
+        let quantity = parseInt(quantityInput.value) + change;
+        if (quantity >= 1) {
+            quantityInput.value = quantity;
+
+            
+            fetch(`/update-cart/${productId}/${quantity}`)
+                .then(response => response.json())
+                .then(data => {
+                window.location.reload();
+                });
+        }
+    }
+
+    function removeFromCart(productId) {
+        // Supprimer le produit du panier en envoyant une requête à Symfony
+        fetch(`/remove-from-cart/${productId}`)
+            .then(response => response.json())
+            .then(data => {
+                
+                window.location.reload();
+            });
+    }
+
+ 
+</script>
+
+
+
+{% endblock %}
+

@@ -1,0 +1,8 @@
+{# templates/partials/menu.html.twig #}
+<li class="dropdown"><a href="#">Menu</a>
+    <ul>
+        {% for category in categories %}
+            <li><a href="{{ path('app_category_show', {'id': category.id}) }}">{{ category.name }}</a></li>
+        {% endfor %}
+    </ul>
+</li>

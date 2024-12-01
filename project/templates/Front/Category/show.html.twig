@@ -1,0 +1,51 @@
+{% extends 'Front/base.html.twig' %}
+
+{% block title %}{{ category.name }} - WellFood{% endblock %}
+{% block header %}
+
+   <section class="page-banner-area overlay pt-215 rpt-150 pb-160 rpb-120 rel z-1 bgs-cover text-center" style="background-image:  url('{{ asset('theme/images/background/food-banner.jpg') }}');">
+            <div class="container">
+                <div class="banner-inner text-white">
+                    <h3 class="page-title" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="50">{{ category.name }}</h3>
+                    <p>{{ category.description }}</p>
+                 
+                </div>
+            </div>
+    </section>
+        
+{% endblock %}
+
+{% block body %}
+ 
+
+ 
+ 
+<h2> {{ category.name }}</h2>
+  <div class="row">
+ 
+
+        
+        {% for product in  category.products %}
+            <div class="col-xl-4 col-sm-6" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="50">
+                <div class="product-item-two">
+                    <div class="image">
+                        <img src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}">
+                    </div>
+                    <div class="content">
+                        <h5><a href="{{ path('product_show', {'id': product.id}) }}">{{ product.name }}</a></h5>
+                        <p>{{ product.price | number_format(2, '.', ',') }} $</p>
+                    </div>
+                    
+                    <a href=" {{ path('add_to_cart', {'id': product.id}) }} " class="theme-btn">add to cart <i class="far fa-arrow-alt-right"></i></a>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-xl-12">
+                <p>No products available in this category.</p>
+            </div>
+        {% endfor %}
+ 
+</div>
+
+
+{% endblock %}
