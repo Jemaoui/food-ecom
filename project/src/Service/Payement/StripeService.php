@@ -23,23 +23,7 @@ class StripeService
 
     public function createCheckoutSession(int $orderId, float $amount): Session
     {
-        /* return Session::create([
-            'payment_method_types' => ['card'],
-            'line_items' => [[
-                'price_data' => [
-                    'currency' => 'EUR',
-                    'product_data' => [
-                        'name' => 'Order #' . $orderId,
-                    ],
-                    'unit_amount' => $amount * 100, // Convert to cents
-                ],
-                'quantity' => 1,
-            ]],
-            'mode' => 'payment',
-           // 'success_url' => $this->urlGenerator->generate('order_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
-           'success_url' => $this->generateUrl('order_success', ['orderId' => $order->getId()], UrlGeneratorInterface::ABSOLUTE_URL),
-            'cancel_url' => $this->urlGenerator->generate('order_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL),
-        ]); */
+  
 
         return $session = \Stripe\Checkout\Session::create([
             'payment_method_types' => ['card'],
