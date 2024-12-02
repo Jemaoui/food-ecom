@@ -25,8 +25,6 @@ Une fois les services démarrés, vous pouvez accéder à votre application à p
 •	Mailpit : http://localhost:8025
 5. Configurer la base de données
 L'application Symfony est configurée pour utiliser MySQL avec les informations définies dans le fichier .env. Vous pouvez maintenant créer les tables dans la base de données en exécutant la commande suivante dans le conteneur Symfony :
-bash
-Copier le code
 docker exec -it ecom_symfony bash
 php bin/console doctrine:schema:update –force
 
@@ -37,9 +35,9 @@ project\src\Service\Payement\StripeService.php : ligne 16
 
 7. Créer un utilisateur admin
 Si vous souhaitez créer un utilisateur admin pour accéder au back-office :
-1.	Cliquez sur le bouton Connexion -> Créez un compte.
-2.	Accédez à la base de données via PHPMyAdmin -> dans la table Users -> Modifiez son rôle en ["ROLE_ADMIN"].
-________________________________________
+docker exec -it ecom_symfony bash
+php bin/console app:create-user-admin email@example.com password
+
 Fonctionnalités principales
 •	Catalogue de produits : Affichage des plats disponibles.
 •	Détails d'un produit : Affichage complet d'un plat.
