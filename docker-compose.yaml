@@ -49,6 +49,14 @@ services:
         networks:
             - ecom
 
+    redis:
+        image: redis
+        restart: always
+        ports:
+            - "6379:6379"
+        networks:
+            - ecom
+
 networks:
     ecom:
 
