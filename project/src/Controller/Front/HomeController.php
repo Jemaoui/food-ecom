@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class HomeController extends AbstractController
 {
@@ -22,10 +24,22 @@ class HomeController extends AbstractController
 
 
     #[Route('/', name: 'app_home')]
-    public function index(CategoryRepository $categoryRepository, ProductRepository $productRepository): Response
-    {
-        $categories = $categoryRepository->findAll();
-        $products =  $productRepository->findBy(['isBestseller' => true]);
+    public function index(
+        CategoryRepository $categoryRepository, 
+        ProductRepository $productRepository, 
+        CacheInterface $cache
+    ): Response {
+        // Mise en cache des catégories
+        $categories = $cache->get('categories_cache', function (ItemInterface $item) use ($categoryRepository) {
+            $item->expiresAfter(3600); // Cache pendant 1 heure
+            return $categoryRepository->findAll();
+        });
+
+        // Mise en cache des produits bestsellers
+        $products = $cache->get('bestseller_products_cache', function (ItemInterface $item) use ($productRepository) {
+            $item->expiresAfter(1800); // Cache pendant 30 minutes
+            return $productRepository->findBy(['isBestseller' => true]);
+        });
 
         return $this->render('Front/index.html.twig', [
             'categories' => $categories,
