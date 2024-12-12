@@ -30,22 +30,22 @@ services:
         build: docker/php
         container_name: ecom_symfony
         ports:
-          - "8741:80"
+            - "8741:80"
         volumes:
             - ./docker/php/vhosts:/etc/apache2/sites-enabled
             - ./:/var/www
         restart: always
         networks:
             - ecom
-    
+
     # Mailpit container for email testing
     mailpit:
         image: axllent/mailpit
         container_name: ecom_mailpit
         restart: always
         ports:
-            - "1025:1025"  # SMTP server
-            - "8025:8025"  # Web UI
+            - "1025:1025" # SMTP server
+            - "8025:8025" # Web UI
         networks:
             - ecom
 
@@ -57,8 +57,23 @@ services:
         networks:
             - ecom
 
+    frontend:
+        build:
+            context: ./frontend
+        container_name: ecom_react
+        ports:
+            - "5173:5173"
+        volumes:
+            - ./frontend:/app
+            - /app/node_modules
+        working_dir: /app
+        command: [ "npm", "run", "dev", "--", "--host" ]
+        networks:
+            - ecom
+
 networks:
     ecom:
+
 
 volumes:
     db-data:
